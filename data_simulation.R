@@ -1,4 +1,4 @@
-n_indv=1000
+n_indv=4000
 n_loci=1000
 n_samp=n_indv/2
 n_epis=2
@@ -115,4 +115,35 @@ for(i in 1:n_samp)
   }
 }
 t.test(grs_case,grs_cntl)
+dummy_gt=array(0,dim=c(n_indv,(2*n_loci)))
+dummy_out=array(0,dim=c(n_indv,2))
+for(i in 1:n_samp)
+{
+  for(j in 1:n_loci)
+  {
+    if(gt_case[i,j]==1)
+    {
+      dummy_gt[i,(2*j-1)]=1
+    }
+    if(gt_case[i,j]==2)
+    {
+      dummy_gt[i,(2*j-2)]=1
+      dummy_gt[i,(2*j-1)]=1
+    }
+    if(gt_cntl[i,j]==1)
+    {
+      dummy_gt[(n_samp+i),(2*j-1)]=1
+    }
+    if(gt_cntl[i,j]==2)
+    {
+      dummy_gt[(n_samp+i),(2*j-2)]=1
+      dummy_gt[(n_samp+i),(2*j-1)]=1
+    }
+  }
+  dummy_out[i,]=c(1,0)
+  dummy_out[n_samp+i,]=c(0,1)
+}
+write.table(dummy_gt,file="sim.gt.txt",col.names=FALSE,row.names=FALSE,sep="\t")
+write.table(dummy_out,file="sim.out.txt",col.names=FALSE,row.names=FALSE,sep="\t")
+
 
