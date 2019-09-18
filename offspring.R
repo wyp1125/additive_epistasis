@@ -1,0 +1,141 @@
+generate_gt<-function(gt1,gt2)
+{
+  gtn=gt1
+  nn=length(gt1)
+  for(ii in 1:nn)
+  {
+    sum_gt=gt1[ii]+gt2[ii]
+    if(sum_gt==0)
+    {
+      gtn[ii]=0
+    }
+    else if(sum_gt==4)
+    {
+      gtn[ii]=2
+    }
+    else if(sum_gt==1)
+    {
+      tmp=runif(1)
+      gtn[ii]=0
+      if(tmp>=0.5)
+      {
+        gtn[ii]=1
+      }
+    }
+    else if(sum_gt==3)
+    {
+      tmp=runif(1)
+      gtn[ii]=1
+      if(tmp>=0.5)
+      {
+        gtn[ii]=2
+      }
+    }
+    else
+    {
+      prd_gt=gt1[ii]*gt2[ii]
+      if(prd_gt==0)
+      {
+        gtn[ii]=1
+      }
+      else
+      {
+        tmp=runif(1)
+        val=0
+        if(tmp>=0.25)
+        {
+          val=1
+        }
+        if(tmp>=0.75)
+        {
+          val=2
+        }
+        gtn[ii]=val
+      }
+    }
+  }
+  return(gtn)
+}
+lnames = load(file = "for_offspring.RData")
+lnames
+gt_ofs1=array(0,dim=c(n_samp,n_loci))
+gt_ofs2=array(0,dim=c(n_samp,n_loci))
+gt_ofs3=array(0,dim=c(n_samp,n_loci))
+for(i in 1:n_samp)
+{
+  sel=floor(runif(6)*n_samp)+1
+  gt_ofs1[i,]=generate_gt(gt_case[sel[1],],gt_case[sel[2],])
+  gt_ofs2[i,]=generate_gt(gt_case[sel[3],],gt_cntl[sel[4],])
+  gt_ofs3[i,]=generate_gt(gt_cntl[sel[5],],gt_cntl[sel[6],])
+}
+
+grs_ofs1=array(0,dim=c(n_samp))
+grs_ofs2=grs_ofs1
+grs_ofs3=grs_ofs1
+epi_ofs1=array(0,dim=c(n_samp,(n_loci/n_epis)))
+epi_ofs2=epi_ofs1
+epi_ofs3=epi_ofs1
+for(i in 1:n_samp)
+{
+  for(j in 1:(n_loci/n_epis))
+  {
+    inc_ofs1=1
+    inc_ofs2=1
+    inc_ofs3=1
+    for(k in 1:n_epis)
+    {
+      fac_ofs1=0
+      fac_ofs2=0
+      fac_ofs3=0
+      if(gt_ofs1[i,(j-1)*n_epis+k]==2)
+      {
+        fac_ofs1=1
+      }
+      inc_ofs1=inc_ofs1*fac_ofs1
+      if(gt_ofs2[i,(j-1)*n_epis+k]==2)
+      {
+        fac_ofs2=1
+      }
+      inc_ofs2=inc_ofs2*fac_ofs2
+      if(gt_ofs3[i,(j-1)*n_epis+k]==2)
+      {
+        fac_ofs3=1
+      }
+      inc_ofs3=inc_ofs3*fac_ofs3
+    }
+    epi_ofs1[i,j]=inc_ofs1
+    epi_ofs2[i,j]=inc_ofs2
+    epi_ofs3[i,j]=inc_ofs3
+  }
+}
+yy1=apply(epi_case,1,sum)
+yy2=apply(epi_cntl,1,sum)
+xx1=apply(epi_ofs1,1,sum)
+xx2=apply(epi_ofs2,1,sum)
+xx3=apply(epi_ofs3,1,sum)
+t.test(yy1,yy2)
+t.test(yy1,xx1)
+t.test(xx1,xx2)
+t.test(xx1,xx3)
+t.test(yy2,xx3)
+t.test(xx2,xx3)
+mixed_xx=c(yy1,yy2,xx1,xx2,xx3)
+max_val=ceiling(max(mixed_xx))
+dstn1=table(cut(yy1,breaks=(0:max_val)))/n_samp
+dstn2=table(cut(yy2,breaks=(0:max_val)))/n_samp
+dstn3=table(cut(xx1,breaks=(0:max_val)))/n_samp
+dstn4=table(cut(xx2,breaks=(0:max_val)))/n_samp
+dstn5=table(cut(xx3,breaks=(0:max_val)))/n_samp
+max_y=ceiling(max(c(dstn1,dstn2,dstn3,dstn4,dstn5))*100)
+interval=ceiling(max_y/5)
+max_y=interval*5
+tick_pos=seq(0,max_y,interval)/100
+max_y=max_y/100
+x=(1:max_val)-0.5
+plot(x,dstn2,type="o",col="black",pch=16,xlim=range(0,max_val),ylim=range(0,max_y),xlab="Genetic risk score",ylab="Density",yaxt='n')
+lines(x,dstn1,type="o",col="blue",pch=16)
+lines(x,dstn3,type="o",col="red",pch=16)
+lines(x,dstn4,type="o",col="orange",pch=16)
+lines(x,dstn5,type="o",col="yellow",pch=16)
+axis(2,labels=TRUE,at=tick_pos)
+legend("topright",cex=0.8,c("case group","control group","case X case offsprings","case X control offsprings","control X control offsprings"),pch=c(16,16,16,16,16),lty=c(1,1,1,1,1),col=c("blue","black","red","orange","yellow"))

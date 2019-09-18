@@ -1,10 +1,10 @@
 n_indv=2000
-n_loci=2000
+n_loci=1000
 n_samp=n_indv/2
 n_epis=2
 n_rept=5000
 maf_high=0.5
-maf_low=0.025
+maf_low=0.01
 gt_case=array(0,dim=c(n_samp,n_loci))
 gt_cntl=array(0,dim=c(n_samp,n_loci))
 
