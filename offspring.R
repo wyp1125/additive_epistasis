@@ -132,10 +132,12 @@ max_y=interval*5
 tick_pos=seq(0,max_y,interval)/100
 max_y=max_y/100
 x=(1:max_val)-0.5
-plot(x,dstn2,type="o",col="black",pch=16,xlim=range(0,max_val),ylim=range(0,max_y),xlab="Genetic risk score",ylab="Density",yaxt='n')
+png("fig1.png",width=6,height=6,units="in",res=400)
+plot(x,dstn2,type="o",col="black",pch=16,xlim=range(0,max_val),ylim=range(0,max_y),xlab="Genetic risk score",ylab="Density",yaxt='n',cex.lab=1.2)
 lines(x,dstn1,type="o",col="blue",pch=16)
 lines(x,dstn3,type="o",col="red",pch=16)
 lines(x,dstn4,type="o",col="orange",pch=16)
 lines(x,dstn5,type="o",col="yellow",pch=16)
 axis(2,labels=TRUE,at=tick_pos)
-legend("topright",cex=0.8,c("case group","control group","case X case offsprings","case X control offsprings","control X control offsprings"),pch=c(16,16,16,16,16),lty=c(1,1,1,1,1),col=c("blue","black","red","orange","yellow"))
+legend("topright",cex=1,c("case group","control group","case X case offsprings","case X control offsprings","control X control offsprings"),pch=c(16,16,16,16,16),lty=c(1,1,1,1,1),col=c("blue","black","red","orange","yellow"))
+dev.off()
