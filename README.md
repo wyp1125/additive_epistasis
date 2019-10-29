@@ -20,3 +20,6 @@ Python program to filter out loci with different MAFs between two populations.
 Perl program to retrieve the genotypes of the loci after filtering.
 #### 9) generate_epi.py
 Python program to identify 500 pairs of interacting loci for a pair of populations.
+## Other tools
+#### 10) 
+#### 11) 
