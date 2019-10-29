@@ -11,3 +11,5 @@ Python program to run deep neural network model (with Keras) for the additive ep
 Python program to run deep neural network model (with Keras) for the additive epistatic interaction model (using occurrences of pure epistatic interactions as features), in a cross-validation setting under which training and testing inputs are separated.
 #### 6) get_2pop_af.pl
 Perl program to retrieve the loci with MAF>0.01 and MAF<0.5 in two populations. 
+#### 7) filter_loci.py
+Python program to filter out loci with different MAFs between two populations.
