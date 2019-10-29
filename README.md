@@ -25,3 +25,5 @@ Python program to identify 500 pairs of interacting loci for a pair of populatio
 Compute AUC in R.
 #### 11) compute_epi_AUC.py
 Compute AUC in python.
+#### 12) odd_ratio.R
+Compute several statistics for the simulated genotype dataset.
