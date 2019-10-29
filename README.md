@@ -9,3 +9,5 @@ R program to add a ratio of noises to the aforementioned simulated genotype data
 Python program to run deep neural network model (with Keras) for the additive epistatic interaction model (using occurrences of pure epistatic interactions as features).
 #### 5) run_dnn_cv.py
 Python program to run deep neural network model (with Keras) for the additive epistatic interaction model (using occurrences of pure epistatic interactions as features), in a cross-validation setting under which training and testing inputs are separated.
+#### 6) get_2pop_af.pl
+Perl program to retrieve the loci with 
