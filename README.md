@@ -17,5 +17,6 @@ Perl program to retrieve the loci with MAF>0.01 and MAF<0.5 in two populations.
 #### 7) filter_loci.py
 Python program to filter out loci with different MAFs between two populations.
 #### 8) retrieve_gt.pl
-Perl program to retrieve the genotypes of the loci after filtering
+Perl program to retrieve the genotypes of the loci after filtering.
 #### 9) generate_epi.py
+Python program to identify 500 pairs of interacting loci for a pair of populations.
