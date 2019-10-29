@@ -13,3 +13,5 @@ Python program to run deep neural network model (with Keras) for the additive ep
 Perl program to retrieve the loci with MAF>0.01 and MAF<0.5 in two populations. 
 #### 7) filter_loci.py
 Python program to filter out loci with different MAFs between two populations.
+#### 8) retrieve_gt.pl
+Perl program to retrieve the genotypes of the loci after filtering
