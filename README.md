@@ -26,4 +26,4 @@ Compute AUC in R.
 #### 11) compute_epi_AUC.py
 Compute AUC in python.
 #### 12) odd_ratio.R
-Compute several statistics for the simulated genotype dataset.
+R program to compute several statistics for the simulated genotype dataset.
