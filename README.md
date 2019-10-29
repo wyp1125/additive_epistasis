@@ -22,5 +22,6 @@ Perl program to retrieve the genotypes of the loci after filtering.
 Python program to identify 500 pairs of interacting loci for a pair of populations.
 ## Other tools
 #### 10) comp_auc.R
-Compute AUC in R
-#### 11) 
+Compute AUC in R.
+#### 11) compute_epi_AUC.py
+Compute AUC in python.
