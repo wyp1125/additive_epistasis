@@ -1,2 +1,3 @@
 # Tools for additive epistatic interaction model
-## data_simulation.R
+### 1) data_simulation.R
+R program for generating a case-control simulated genotype dataset comprised of pure epistatic interactions. 
