@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description='Process input files and parameters
 parser.add_argument('-x', '--trnx', type=str, required=True, help="training features")
 parser.add_argument('-y', '--trny', type=str, required=True, help="training outcomes")
 parser.add_argument('-v', '--valid', type=str, required=False, help="validation ratio")
+parser.add_argument('-t', '--test', type=str, required=False, help="test ratio")
 parser.add_argument('-r', '--rate', type=float, required=False, help="learning rate")
 parser.add_argument('-c', '--epochs', type=int, required=False, help="number of epochs")
 parser.add_argument('-b', '--batch_size', type=int, required=False, help="batch size")
@@ -18,6 +19,9 @@ parser.add_argument('-d1', '--dense1', required=False, help="units of first dens
 parser.add_argument('-d2', '--dense2', required=False, help="units of second dense layer")
 parser.add_argument('-l', '--log', type=str, required=False, help="log file")
 args = parser.parse_args()
+test_ratio=0.3
+if args.test:
+    test_ratio=float(args.valid)
 validation_ratio=0.2
 if args.valid:
     validation_ratio=float(args.valid)
@@ -45,11 +49,14 @@ if args.log:
 Xall=np.loadtxt(args.trnx)
 Yall=np.loadtxt(args.trny)
 Xall,Yall=shuffle(Xall,Yall)
-validation_size = int(validation_ratio * Xall.shape[0])
-Xtrn=Xall[validation_size:]
-Ytrn=Yall[validation_size:]
-Xtst=Xall[:validation_size]
-Ytst=Yall[:validation_size]
+test_size = int(test_ratio * Xall.shape[0])
+validation_size = int(validation_ratio * (Xall.shape[0]-test_size))
+Xtrn=Xall[(validation_size+test_size):]
+Ytrn=Yall[(validation_size+test_size):]
+Xval=Xall[test_size:(validation_size+test_size)]
+Yval=Yall[test_size:(validation_size+test_size)]
+Xtst=Xall[:test_size]
+Ytst=Yall[:test_size]
 num_classes=2
 model=Sequential()
 model.add(Dense(unit_1,activation='relu'))
@@ -59,7 +66,7 @@ model.add(Dropout(0.25))
 model.add(Dense(num_classes, activation='softmax'))
 model.compile(optimizer=tf.train.AdamOptimizer(learning_rate),
               loss='categorical_crossentropy', metrics=['accuracy'])
-model.fit(Xtrn, Ytrn, validation_data=(Xtst,Ytst), epochs=training_epochs, batch_size=batch_size)
+model.fit(Xtrn, Ytrn, validation_data=(Xval,Yval), epochs=training_epochs, batch_size=batch_size)
 Ypred=model.predict(Xtst).ravel()
 fpr, tpr, threshold = roc_curve(Ytst.ravel(), Ypred)
 auc_dnn = auc(fpr,tpr)
